@@ -16,6 +16,8 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private RectTransform _targetShopPosition;
     [SerializeField] private float _speed; 
 
+
+    private Animator _animator;
     private List<Item> _selectedItem = new List<Item>();
     private Transform _startPosition;
 
@@ -23,10 +25,11 @@ public class ShopManager : MonoBehaviour
 
     private void Start()
     {
-        _startPosition.position = transform.position;
+        //_startPosition.position = transform.position;
         FillShop();
         gameObject.SetActive(false);
         _buyerConroller.OnReadyBuyed.AddListener(ActivateShop);
+        _animator = GetComponent<Animator>();
     }
 
     public void FillShop()
@@ -64,7 +67,8 @@ public class ShopManager : MonoBehaviour
     public void ActivateShop()
     {
         gameObject.SetActive(true);
-        transform.position = Vector2.MoveTowards(transform.position, _targetShopPosition.position, _speed * Time.deltaTime);
+        _animator.SetTrigger("ActivateShop");
+        
     }
 
 }
