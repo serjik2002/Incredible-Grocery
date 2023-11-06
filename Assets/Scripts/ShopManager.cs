@@ -18,10 +18,11 @@ public class ShopManager : MonoBehaviour
 
 
     private Animator _animator;
-    private List<Item> _selectedItem = new List<Item>();
+    private List<Item> _selectedItems = new List<Item>();
     private Transform _startPosition;
 
     public List<Item> AllItems => _allItems;
+    public List<Item> SelectedItems => _selectedItems;
 
     private void Start()
     {
@@ -56,19 +57,18 @@ public class ShopManager : MonoBehaviour
 
     public void Select(Item item)
     {
-        _selectedItem.Add(item);
+        _selectedItems.Add(item);
     }
 
     public void Unselect(Item item)
     {
-        _selectedItem.Remove(item);
+        _selectedItems.Remove(item);
     }
 
     public void ActivateShop()
     {
         gameObject.SetActive(true);
         _animator.SetTrigger("ActivateShop");
-        
     }
 
 }

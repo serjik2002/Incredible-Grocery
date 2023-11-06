@@ -33,6 +33,8 @@ public class BuyerConroller : MonoBehaviour
     public UnityEvent OnReadyBuyed;
     public UnityEvent OnReadyChosed;
 
+    public List<Item> SaveItems => _saveItems;
+
 
     private void Start()
     {
@@ -52,12 +54,15 @@ public class BuyerConroller : MonoBehaviour
 
     public void ChoseGoods()
     {
-        do
+
+        while (_saveItems.Count < 3)
         {
             var item = _allItems[(int)Random.Range(0, _allItems.Count)];
             if (!_saveItems.Contains(item))
                 _saveItems.Add(item);
-        } while (_saveItems.Count < 3);
+        } 
+
+        Debug.Log("ChoseGoods");
     }
 
     public void DisplayItems()
@@ -103,14 +108,14 @@ public class BuyerConroller : MonoBehaviour
         {
             _itemCloud.SetActive(true);
             SetState(BuyerState.ChoseGoods);
-            
+
         }
 
     }
 
     private void SubstractTime()
     {
-        if(_timeToRemember > 0)
+        if (_timeToRemember > 0)
         {
             _timeToRemember -= Time.deltaTime;
         }
@@ -119,6 +124,6 @@ public class BuyerConroller : MonoBehaviour
             SetState(BuyerState.WaitGoods);
             _itemCloud.SetActive(false);
         }
-        
+
     }
 }
