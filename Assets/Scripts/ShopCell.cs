@@ -6,7 +6,13 @@ using UnityEngine.UI;
 
 public class ShopCell : MonoBehaviour
 {
-    [SerializeField] GameObject _imageCheck;
+    [SerializeField] private GameObject _imageCheck;
+    [SerializeField] private Sprite _correctCheck;
+    [SerializeField] private Sprite _incorrectCheck;
+    
+
+    private PlayerInventory _playerInventory;
+
     private Item _item;
     private GameObject _itemPrefab;
     private Button _button;
@@ -18,10 +24,15 @@ public class ShopCell : MonoBehaviour
     public UnityEvent<Item> OnCellSelected;
     public UnityEvent<Item> OnCellUnselected;
 
+    public Sprite CorrectCheck => _correctCheck;
+
+
+
 
     private void Start()
     {
         _button = GetComponent<Button>();
+        _playerInventory = FindObjectOfType<PlayerInventory>();
     }
 
     public void SetItem(Item item)
@@ -34,10 +45,18 @@ public class ShopCell : MonoBehaviour
         this._itemPrefab = prefab;
     }
 
+    public void SetImageCheck(Sprite sprite)
+    {
+        _imageCheck.GetComponent<SpriteRenderer>().sprite = sprite;
+    }
+
     public void OnClickCell()
     {
+       
         if (!_selected)
         {
+            if (_playerInventory.SelectedItems.Count >= 3)
+                return;  
             OnCellSelected.Invoke(_item);
             _selected = true;
             _imageCheck.SetActive(true);
@@ -51,4 +70,6 @@ public class ShopCell : MonoBehaviour
             _button.GetComponent<Image>().color = new Color(1, 1, 1, 1);
         }
     }
+
+   
 }
