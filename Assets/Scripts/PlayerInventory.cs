@@ -12,9 +12,9 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private GameObject _itemPrefab;
     
     private List<Item> _selectedItems = new List<Item>();
-    private List<bool> _isCorrect = new List<bool>();
     private List<ShopCell> _allShopCells = new List<ShopCell>();
     private Animator _animator;
+
 
     public List<Item> AllItems => _allItems;
     public List<Item > SelectedItems => _selectedItems;
@@ -26,7 +26,6 @@ public class PlayerInventory : MonoBehaviour
     {
         
         _animator = GetComponent<Animator>();
-        //OnSelectedItemChanged.AddListener();
 
     }
 
@@ -46,21 +45,6 @@ public class PlayerInventory : MonoBehaviour
         OnSelectedItemChanged.Invoke();
     }
 
-    public void CheckOrder(Customer customer)
-    {
-        foreach (var item in _selectedItems)
-        {
-            if (customer.OrderItems.Contains(item))
-            {
-                _isCorrect.Add(true);
-            }
-            else
-            {
-                _isCorrect.Add(false);
-            }
-        }
-        
-    }
 
     public void FillInventory()
     {
