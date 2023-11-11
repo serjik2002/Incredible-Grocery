@@ -23,7 +23,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Sprite _satisfiedEmotion;
     [SerializeField] private Sprite _dissatisfiedEmotion;
-
+    private SoundManager _soundManager;
 
     public Button SellButton => _sellButton;
 
@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
 
         _sellButton.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
         _sellButton.enabled = false;
+        _soundManager = FindObjectOfType<SoundManager>();
         AddListenerMethods();
 
     }
@@ -57,6 +58,7 @@ public class UIManager : MonoBehaviour
     public void EnableOrderCloud()
     {
         _orderCloud.SetActive(true);
+        _soundManager.PlaySFX("BubbleAppeared");
     }
 
     public void DisableOrderCloud()
@@ -118,6 +120,7 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         _selectedItemCloud.SetActive(true);
+        _soundManager.PlaySFX("BubbleAppeared");
         for (int i = 0; i < _playerInventory.SelectedItems.Count; i++)
         {
             yield return new WaitForSeconds(0.5f);
@@ -135,6 +138,7 @@ public class UIManager : MonoBehaviour
         }
         yield return new WaitForSeconds(1);
         _selectedItemCloud.SetActive(false);
+        _soundManager.PlaySFX("BubbleDisppeared");
         DisplaySatisfied();
         _customer.SetStateWalkToExit();
 
@@ -145,7 +149,7 @@ public class UIManager : MonoBehaviour
         {
             item.SetActive(false);
         }
-        _orderCloud.SetActive(true);
+        EnableOrderCloud();
         _emotion.SetActive(true);
         var emotion = _emotion.GetComponent<SpriteRenderer>();
 

@@ -5,6 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuEntryPoint : MonoBehaviour
 {
+    private SoundManager _soundManager;
+
+    private void Awake()
+    {
+        _soundManager = FindObjectOfType<SoundManager>();
+    }
+    private void Start()
+    {
+        _soundManager.PlayMusic("BackgroundMusic");
+    }
 
     public void StartGame()
     {
