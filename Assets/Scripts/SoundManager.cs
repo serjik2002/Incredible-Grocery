@@ -17,6 +17,7 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] private Sound[] _musicSounds, sfxSounds;
     [SerializeField] private AudioSource _musicSource, _sfxSource;
+    [SerializeField] private SoundSettings _soundSettings;
 
     private void Awake()
     {
@@ -30,9 +31,11 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     private void Start()
     {
-        
+        _musicSource.mute = _soundSettings.MusicMute;
+        _sfxSource.mute = _soundSettings.SoundMute;
     }
 
     public void PlayMusic(string name)
@@ -65,6 +68,18 @@ public class SoundManager : MonoBehaviour
             _sfxSource.loop = false;
             _sfxSource.Play();
         }
+    }
+
+    public void ToggleMusic()
+    {
+        _musicSource.mute = !_musicSource.mute;
+        _soundSettings.SetMusicMute(_musicSource.mute);
+    }
+
+    public void ToggleSFX()
+    {
+        _sfxSource.mute = !_sfxSource.mute;
+        _soundSettings.SetSoundMute(_sfxSource.mute);
     }
 }
 

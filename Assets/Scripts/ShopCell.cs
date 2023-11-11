@@ -16,7 +16,6 @@ public class ShopCell : MonoBehaviour
     private Item _item;
     private GameObject _itemPrefab;
     private Button _button;
-    private SoundManager _soundManager;
     private bool _selected;
     
 
@@ -34,7 +33,6 @@ public class ShopCell : MonoBehaviour
     {
         _button = GetComponent<Button>();
         _playerInventory = FindObjectOfType<PlayerInventory>();
-        _soundManager = FindObjectOfType<SoundManager>();
     }
 
     public void SetItem(Item item)
@@ -72,7 +70,7 @@ public class ShopCell : MonoBehaviour
             _imageCheck.SetActive(false);
             _button.GetComponent<Image>().color = new Color(1, 1, 1, 1);
         }
-        _soundManager.PlaySFX("ProductSelect");
+        SoundManager.Instance.PlaySFX("ProductSelect");
     }
 
    

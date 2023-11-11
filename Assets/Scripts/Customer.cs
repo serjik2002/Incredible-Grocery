@@ -47,7 +47,11 @@ public class Customer : MonoBehaviour
     {
         _currentState = CustomerState.WalkToCashier;
         _wallet = FindObjectOfType<Wallet>();
+        SoundManager.Instance.PlayMusic("BackgroundMusic");
     }
+
+
+    
 
     private void Update()
     {

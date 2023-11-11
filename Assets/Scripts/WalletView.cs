@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class WalletView : MonoBehaviour
 {
     private Wallet _wallet;
-    private SoundManager _soundManager;
     [SerializeField] private TMP_Text _moneyBalance;
 
 
@@ -16,13 +15,11 @@ public class WalletView : MonoBehaviour
         
         _wallet = FindObjectOfType<Wallet>();
         _wallet.OnMoneyChanged.AddListener(UpdateMoneyText);
-        _soundManager = FindObjectOfType<SoundManager>();
-        _moneyBalance.text = "$ " + _wallet.Money;
+        UpdateMoneyText();
     }
 
     public void UpdateMoneyText()
     {
-        _moneyBalance.text = "$ " + _wallet.Money;
-        _soundManager.PlaySFX("Money");
+        _moneyBalance.text = "$ " + _wallet.Money.ToString();
     }
 }
