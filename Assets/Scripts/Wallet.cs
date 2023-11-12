@@ -37,6 +37,7 @@ public class Wallet : MonoBehaviour
             _money += _fixedValue * _customer.CorrectItemCount;
         }
         _walletBalance.SetBalance(_money);
-        OnMoneyChanged.Invoke();
+        if(_customer.CorrectItemCount != 0)
+            OnMoneyChanged.Invoke();
     }
 }

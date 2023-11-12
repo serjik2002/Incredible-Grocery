@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28b9c685361a22d4eaa10186b4b38103, type: 3}
   m_Name: SoundSettings
   m_EditorClassIdentifier: 
-  _musicMute: 1
-  _soundMute: 1
+  _musicMute: 0
+  _soundMute: 0

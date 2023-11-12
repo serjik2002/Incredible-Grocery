@@ -35,6 +35,7 @@ public class ShopCell : MonoBehaviour
         _playerInventory = FindObjectOfType<PlayerInventory>();
     }
 
+
     public void SetItem(Item item)
     {
         this._item = item;
@@ -48,6 +49,12 @@ public class ShopCell : MonoBehaviour
     public void SetImageCheck(Sprite sprite)
     {
         _imageCheck.GetComponent<SpriteRenderer>().sprite = sprite;
+    }
+    public void Unselect()
+    {
+        _selected = false;
+        _imageCheck.SetActive(false);
+        _button.GetComponent<Image>().color = new Color(1, 1, 1, 1);
     }
 
     public void OnClickCell()
