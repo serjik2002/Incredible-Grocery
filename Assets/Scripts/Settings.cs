@@ -9,12 +9,10 @@ public class Settings : MonoBehaviour
     [SerializeField] private GameObject _settingsPanel;
 
     [SerializeField] private Sprite _buttonOn, _buttonOff;
-    [SerializeField] private SoundSettings _soundSettings;
 
     private void Awake()
     {
-        ChangeSoundButtonSprite();
-        ChangeMusicButtonSprite();
+        
     }
 
     private void Start()
@@ -35,15 +33,17 @@ public class Settings : MonoBehaviour
         });
 
         
-        
-        
+
+
     }
 
     public void OpenSettings()
     {
-        Debug.Log("OpenSettings");
         _settingsPanel.SetActive(true);
+        ChangeSoundButtonSprite();
+        ChangeMusicButtonSprite();
         Time.timeScale = 0;
+        
     }
 
     public void SaveSettings()
@@ -54,7 +54,7 @@ public class Settings : MonoBehaviour
 
     public void ChangeSoundButtonSprite()
     {
-        if(!_soundSettings.SoundMute)
+        if(!SoundManager.Instance.SfxSource.mute)
         {
             _soundButton.GetComponent<Image>().sprite = _buttonOn;
         }
@@ -65,7 +65,7 @@ public class Settings : MonoBehaviour
     }
     public void ChangeMusicButtonSprite()
     {
-        if (!_soundSettings.MusicMute)
+        if (!SoundManager.Instance.MusicSource.mute)
         {
             _musicButton.GetComponent<Image>().sprite = _buttonOn;
         }

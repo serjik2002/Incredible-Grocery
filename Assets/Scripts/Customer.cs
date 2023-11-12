@@ -12,6 +12,7 @@ public enum CustomerState
     WalkToExit
 }
 
+//here it was possible to write a state machine, but I have not yet fully understood how it works
 
 public class Customer : MonoBehaviour
 {
@@ -55,6 +56,7 @@ public class Customer : MonoBehaviour
         _animator = GetComponent<Animator>();
         SoundManager.Instance.PlayMusic("BackgroundMusic");
         _animator = GetComponentInChildren<Animator>();
+        _correctItemCount = 0;
     }
 
     private void Update()
