@@ -11,10 +11,14 @@ public class WalletView : MonoBehaviour
 
 
     private void Start()
-    {
-        
+    {  
         _wallet = FindObjectOfType<Wallet>();
         _wallet.OnMoneyChanged.AddListener(UpdateMoneyText);
+        _wallet.OnMoneyChanged.AddListener(() =>
+        {
+            SoundManager.Instance.PlaySFX("Money");
+        });
+
         UpdateMoneyText();
     }
 

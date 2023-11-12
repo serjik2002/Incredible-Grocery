@@ -11,14 +11,37 @@ public class Settings : MonoBehaviour
     [SerializeField] private Sprite _buttonOn, _buttonOff;
     [SerializeField] private SoundSettings _soundSettings;
 
-    private void Start()
+    private void Awake()
     {
         ChangeSoundButtonSprite();
         ChangeMusicButtonSprite();
     }
 
+    private void Start()
+    {
+        _soundButton.onClick.AddListener(SoundManager.Instance.ToggleSFX);
+        _soundButton.onClick.AddListener(ChangeSoundButtonSprite);
+        _soundButton.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlaySFX("ButtonClick");
+        });
+
+
+        _musicButton.onClick.AddListener(SoundManager.Instance.ToggleMusic);
+        _musicButton.onClick.AddListener(ChangeMusicButtonSprite);
+        _musicButton.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlaySFX("ButtonClick");
+        });
+
+        
+        
+        
+    }
+
     public void OpenSettings()
     {
+        Debug.Log("OpenSettings");
         _settingsPanel.SetActive(true);
         Time.timeScale = 0;
     }

@@ -6,8 +6,7 @@ using UnityEngine.Events;
 [System.Serializable]
 public class Wallet : MonoBehaviour
 {
-    [SerializeField] WalletBalance _walletBalance;
-    private int _money;
+    private int _money = 0;
     private int _fixedValue = 10;
     private Customer _customer;
     
@@ -18,12 +17,12 @@ public class Wallet : MonoBehaviour
 
     private void Awake()
     {
-        _money = _walletBalance.Balance;
+        _money = PlayerPrefs.GetInt("money");
     }
 
     private void Start()
     {
-        _customer = FindObjectOfType<Customer>(); 
+        _customer = FindObjectOfType<Customer>();
     }
 
     public void AddMoney()
@@ -36,8 +35,13 @@ public class Wallet : MonoBehaviour
         {
             _money += _fixedValue * _customer.CorrectItemCount;
         }
-        _walletBalance.SetBalance(_money);
+        PlayerPrefs.SetInt("money", _money);
+
         if(_customer.CorrectItemCount != 0)
+        {
             OnMoneyChanged.Invoke();
+        }
+            
+      
     }
 }

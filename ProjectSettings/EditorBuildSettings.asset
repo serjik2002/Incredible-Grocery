@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/EntryPointBootStrap.unity
     guid: 83d9b1437edb67c46b2d151785f2e140
   - enabled: 1

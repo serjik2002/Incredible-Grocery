@@ -34,8 +34,8 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        _musicSource.mute = _soundSettings.MusicMute;
-        _sfxSource.mute = _soundSettings.SoundMute;
+        _musicSource.mute = Convert.ToBoolean(PlayerPrefs.GetInt("MusicMute"));
+        _sfxSource.mute = Convert.ToBoolean(PlayerPrefs.GetInt("SoundMute"));
     }
 
     public void PlayMusic(string name)
@@ -73,12 +73,14 @@ public class SoundManager : MonoBehaviour
     public void ToggleMusic()
     {
         _musicSource.mute = !_musicSource.mute;
+        PlayerPrefs.SetInt("MusicMute", Convert.ToInt32(_musicSource.mute));
         _soundSettings.SetMusicMute(_musicSource.mute);
     }
 
     public void ToggleSFX()
     {
         _sfxSource.mute = !_sfxSource.mute;
+        PlayerPrefs.SetInt("SoundMute", Convert.ToInt32(_musicSource.mute));
         _soundSettings.SetSoundMute(_sfxSource.mute);
     }
 }
