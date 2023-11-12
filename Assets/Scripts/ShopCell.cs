@@ -35,6 +35,7 @@ public class ShopCell : MonoBehaviour
         _playerInventory = FindObjectOfType<PlayerInventory>();
     }
 
+
     public void SetItem(Item item)
     {
         this._item = item;
@@ -49,6 +50,12 @@ public class ShopCell : MonoBehaviour
     {
         _imageCheck.GetComponent<SpriteRenderer>().sprite = sprite;
     }
+    public void Unselect()
+    {
+        _selected = false;
+        _imageCheck.SetActive(false);
+        _button.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+    }
 
     public void OnClickCell()
     {
@@ -61,6 +68,7 @@ public class ShopCell : MonoBehaviour
             _selected = true;
             _imageCheck.SetActive(true);
             _button.GetComponent<Image>().color = new Color(1, 1, 1, 0.3f);
+
         }
         else
         {
@@ -69,6 +77,7 @@ public class ShopCell : MonoBehaviour
             _imageCheck.SetActive(false);
             _button.GetComponent<Image>().color = new Color(1, 1, 1, 1);
         }
+        SoundManager.Instance.PlaySFX("ProductSelect");
     }
 
    

@@ -6,8 +6,24 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
-    public UnityEvent OnStartGame;
-    public UnityEvent OnEndGame;
-    public UnityEvent OnLevelStart;
+
+    public static GameManager Instance;
+
     public UnityEvent OnLevelEnd;
+
+    private void Awake()
+    {
+        Application.targetFrameRate = 120;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(Instance);
+        }
+    }
+
+
 }

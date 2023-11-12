@@ -24,7 +24,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite _satisfiedEmotion;
     [SerializeField] private Sprite _dissatisfiedEmotion;
 
-
     public Button SellButton => _sellButton;
 
     private void Start()
@@ -36,8 +35,24 @@ public class UIManager : MonoBehaviour
 
     }
 
+    private void Restart()
+    {
+        _emotion.SetActive(false);
+        _orderCloud.SetActive(false);
+        _selectedItemCloud.SetActive(false);
+
+        foreach (var item in _selectedObject)
+        {
+            item.GetComponent<SpriteRenderer>().sprite = null;
+            item.GetComponent<ShopCell>().SetImageCheck(null);
+            item.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        }
+        SellButtonChangeState();
+    }
+
     private void AddListenerMethods()
     {
+        GameManager.Instance.OnLevelEnd.AddListener(Restart);
         _customer.OnPlaceOrder.AddListener(EnableOrderCloud);
         _customer.OnPlaceOrder.AddListener(DisplayOrder);
         _customer.OnWaitOrder.AddListener(DisableOrderCloud);
@@ -57,6 +72,7 @@ public class UIManager : MonoBehaviour
     public void EnableOrderCloud()
     {
         _orderCloud.SetActive(true);
+        SoundManager.Instance.PlaySFX("BubbleAppeared");
     }
 
     public void DisableOrderCloud()
@@ -83,7 +99,7 @@ public class UIManager : MonoBehaviour
 
     private void SellButtonChangeState()
     {
-        if (_playerInventory.SelectedItems.Count < _customer.OrderItems.Count)
+        if (_playerInventory.SelectedItems.Count < 1)
         {
             _sellButton.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
             _sellButton.enabled = false;
@@ -118,6 +134,7 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         _selectedItemCloud.SetActive(true);
+        SoundManager.Instance.PlaySFX("BubbleAppeared");
         for (int i = 0; i < _playerInventory.SelectedItems.Count; i++)
         {
             yield return new WaitForSeconds(0.5f);
@@ -135,6 +152,7 @@ public class UIManager : MonoBehaviour
         }
         yield return new WaitForSeconds(1);
         _selectedItemCloud.SetActive(false);
+        SoundManager.Instance.PlaySFX("BubbleDisappeared");
         DisplaySatisfied();
         _customer.SetStateWalkToExit();
 
@@ -145,7 +163,7 @@ public class UIManager : MonoBehaviour
         {
             item.SetActive(false);
         }
-        _orderCloud.SetActive(true);
+        EnableOrderCloud();
         _emotion.SetActive(true);
         var emotion = _emotion.GetComponent<SpriteRenderer>();
 

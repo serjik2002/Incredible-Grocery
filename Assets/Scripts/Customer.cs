@@ -23,6 +23,7 @@ public class Customer : MonoBehaviour
     [SerializeField] private Transform _targetPosition;
     [SerializeField] private Transform _exitPosition;
     [SerializeField] private Button _button;
+    
  
     [SerializeField] private GameObject _orderCloud;
 
@@ -30,8 +31,10 @@ public class Customer : MonoBehaviour
     private bool _isSatisfied;
     private CustomerState _currentState;
     private int _correctItemCount = 0;
-    private bool WaitOrderInvoked = false;
+    private bool _waitOrderInvoked = false;
     private Wallet _wallet;
+    private Animator _animator;
+    private SpriteRenderer _spriteRenderer;
 
 
     public UnityEvent OnWaitOrder;
@@ -45,8 +48,13 @@ public class Customer : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.OnLevelEnd.AddListener(Restart);
+        _spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
         _currentState = CustomerState.WalkToCashier;
         _wallet = FindObjectOfType<Wallet>();
+        _animator = GetComponent<Animator>();
+        SoundManager.Instance.PlayMusic("BackgroundMusic");
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -54,8 +62,27 @@ public class Customer : MonoBehaviour
         HandlesState();
     }
 
+    private void Restart()
+    {
+        StartCoroutine(RestartHelp());
+    }
+
+    private IEnumerator RestartHelp()
+    {
+        yield return new WaitForSeconds(1);
+        _spriteRenderer.enabled = true;
+        _correctItemCount = 0;
+        _orderItems.Clear();
+        _isSatisfied = false;
+        _orderCloud.SetActive(false);
+        _waitOrderInvoked = false;
+        transform.localRotation = new Quaternion(0, 0, 0, 0);
+        _currentState = CustomerState.WalkToCashier;
+    }
+
     private void WalkToCashier()
     {
+        
         transform.position = Vector2.MoveTowards(transform.position, _targetPosition.position, Time.deltaTime * _speed);
         if (Vector2.Distance(transform.position, _targetPosition.position) < 0.1)
         {
@@ -66,6 +93,11 @@ public class Customer : MonoBehaviour
     private void WalkToExit()
     {
         transform.position = Vector2.MoveTowards(transform.position, _exitPosition.position, Time.deltaTime * _speed);
+        if (Vector2.Distance(transform.position, _exitPosition.position) < 0.1)
+        {
+            _spriteRenderer.enabled = false;
+            GameManager.Instance.OnLevelEnd.Invoke();
+        }
     }
 
     public void PlaceOrder(PlayerInventory playerInventory)
@@ -113,26 +145,34 @@ public class Customer : MonoBehaviour
         switch (_currentState)
         {
             case CustomerState.WalkToCashier:
+                
+                _animator.SetTrigger("Walk");
                 WalkToCashier();               
                 break;
             case CustomerState.PlaceOrder:
+                _animator.ResetTrigger("Walk");
+                _animator.SetTrigger("Stay");
                 PlaceOrder(_playerInventory);
                 OnPlaceOrder.Invoke();
                 _currentState = CustomerState.WaitOrder;
                 break;
             case CustomerState.WaitOrder:
-                if(!WaitOrderInvoked)
+                if(!_waitOrderInvoked)
                 {
                     OnWaitOrder.Invoke();
-                    WaitOrderInvoked = true;
+                    _waitOrderInvoked = true;
                 }
                 break;
-            case CustomerState.WalkToExit:               
+            case CustomerState.WalkToExit:
+                _animator.SetTrigger("Walk");
+                transform.localRotation = new Quaternion(0, 180, 0, 0);
                 WalkToExit();
                 break;
             default:
+                GameManager.Instance.OnLevelEnd.Invoke();
                 break;
         }
     }
+    
 
 }
